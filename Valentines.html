@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Valentine for Aasrija 💘</title>
+
+<style>
+:root{
+  --pink:#ff4d88;
+  --pink2:#ff7fb0;
+  --bg:#fff0f6;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(135deg, #ffe6f0, #fff0f6);
+  overflow:hidden;
+}
+.wrap{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+}
+.card{
+  background:#ffffffdd;
+  padding:32px 26px 36px;
+  border-radius:26px;
+  text-align:center;
+  box-shadow:0 20px 45px rgba(0,0,0,.12);
+}
+h1{
+  font-size:clamp(28px,4.5vw,44px);
+}
+.name{color:var(--pink);}
+
+/* CENTERED BUTTON ROW */
+.buttons{
+  margin-top:22px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  position:relative;
+}
+button{
+  border:none;
+  padding:14px 26px;
+  border-radius:999px;
+  font-size:18px;
+  cursor:pointer;
+}
+#yesBtn{
+  background:linear-gradient(135deg,var(--pink),var(--pink2));
+  color:white;
+  box-shadow:0 16px 30px rgba(255,77,136,.3);
+  transition:transform .15s ease;
+}
+#noBtn{
+  background:#111;
+  color:white;
+}
+
+/* POLAROID PHOTO */
+#photoOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:none;
+  place-items:center;
+  z-index:50;
+}
+.photoBox{
+  background:white;
+  padding:18px 18px 28px;
+  border-radius:22px;
+  box-shadow:0 22px 45px rgba(0,0,0,.28);
+  text-align:center;
+}
+.photoBox img{
+  width:100%;
+  max-width:420px;
+  height:auto;
+  border-radius:14px;
+  display:block;
+  margin:0 auto;
+}
+.photoText{
+  margin-top:14px;
+  font-size:20px;
+  font-weight:700;
+  color:#ff4d88;
+}
+
+/* HEARTS */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:22px;
+  animation:floatUp 6s linear forwards;
+  pointer-events:none;
+}
+@keyframes floatUp{
+  to{transform:translateY(-120vh);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+  <div class="card">
+    <h1>Will you be my valentine,<br><span class="name">Aasrija?</span> 💖</h1>
+    <p>Try and say no pookie <3 😄</p>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes! 💞</button>
+      <button id="noBtn">No 🙈</button>
+    </div>
+  </div>
+</div>
+
+<div id="photoOverlay">
+  <div class="photoBox">
+    <img src="valentine-photo.jpg" alt="Us 💖">
+    <div class="photoText">That's what I thought Pooks <3 💘</div>
+  </div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const overlay = document.getElementById("photoOverlay");
+let yesScale = 1;
+
+function rand(min,max){return Math.random()*(max-min)+min;}
+
+function teleportNo(){
+  const padding = 20;
+  const x = rand(padding, window.innerWidth - noBtn.offsetWidth - padding);
+  const y = rand(padding, window.innerHeight - noBtn.offsetHeight - padding);
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  yesScale = Math.min(2.2, yesScale + .12);
+  yesBtn.style.transform = `scale(${yesScale})`;
+  spawnHearts(6);
+}
+
+function spawnHearts(count){
+  for(let i=0;i<count;i++){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.textContent=["💖","💘","💞","💕","❤️"][Math.floor(Math.random()*5)];
+    h.style.left=rand(0,100)+"vw";
+    h.style.animationDuration=rand(4,7)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),7000);
+  }
+}
+
+noBtn.addEventListener("mouseenter",teleportNo);
+noBtn.addEventListener("touchstart",e=>{
+  e.preventDefault(); teleportNo();
+},{passive:false});
+
+yesBtn.addEventListener("click",()=>{
+  overlay.style.display="grid";
+  noBtn.style.display="none";
+  spawnHearts(30);
+});
+</script>
+
+</body>
+</html>
